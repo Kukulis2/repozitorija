@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="lt">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="author" content="Nikodemas Gircys">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>MeFamily Bootstrap Template - Index</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: MeFamily
+  * Updated: Sep 18 2023 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/family-multipurpose-html-bootstrap-template-free/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center justify-content-between">
+
+      <h1 class="logo"><a href="index.html">Gaidyno Encyclopedia</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html" class="logo"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="active" href="index.html">Home</a></li>
+          <li><a class="active" href="formules.html">Formulės</a></li>
+          <li><a class="active" href="apklausa.html">forma</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+    </div>
+  </header><!-- End Header -->
+
+  <form id="studentForm" style="margin-top:150px; margin-left: 50px;">
+    <label for="name">Vardas:</label>
+    <input type="text" id="name" required><br>
+
+    <label for="surname">Pavardė:</label>
+    <input type="text" id="surname" required><br>
+
+    <label for="studentId">Pažymėjimo Numeris:</label>
+    <input type="text" id="studentId" required><br>
+
+    <label for="grade1">Pažymys 1:</label>
+    <input type="number" id="grade1" required><br>
+
+    <label for="grade2">Pažymys 2:</label>
+    <input type="number" id="grade2" required><br>
+
+    <label for="grade3">Pažymys 3:</label>
+    <input type="number" id="grade3" required><br>
+
+    <label for="grade4">Pažymys 4:</label>
+    <input type="number" id="grade4" required><br>
+
+    <label for="grade5">Pažymys 5:</label>
+    <input type="number" id="grade5" required><br>
+
+    <button type="button" onclick="submitForm()">Išsaugoti</button>
+  </form>
+
+  <div id="output" style="margin-top: 20px;"></div>
+
+  <script>
+    function clearOutput() {
+      document.getElementById("output").innerHTML = "";
+    }
+
+    function validateStudentId(studentId) {
+      var regex = /^\d{5}$/;
+      return regex.test(studentId);
+    }
+
+    function submitForm() {
+      clearOutput();
+
+      var studentId = document.getElementById("studentId").value;
+      if (!validateStudentId(studentId)) {
+        alert("Netinkamas pažymėjimo numeris. Patikrinkite ir bandykite dar kartą.");
+        return;
+      }
+
+      var student = {
+        name: document.getElementById("name").value,
+        surname: document.getElementById("surname").value,
+        studentId: document.getElementById("studentId").value,
+        grades: [
+          parseInt(document.getElementById("grade1").value),
+          parseInt(document.getElementById("grade2").value),
+          parseInt(document.getElementById("grade3").value),
+          parseInt(document.getElementById("grade4").value),
+          parseInt(document.getElementById("grade5").value)
+        ]
+      };
+
+      console.log("Studento informacija:", student);
+      displayOnPage(student);
+      calculateAndDisplayAverage(student);
+    }
+
+    function displayOnPage(student) {
+      var output = "<h2>Studento Informacija:</h2>";
+      output += "<p>Studento vardas: " + student.name + "</p>";
+      output += "<p>Studento pavardė: " + student.surname + "</p>";
+      output += "<p>Pažymėjimo numeris: " + student.studentId + "</p>";
+      output += "<p>Pažymiai:</p>";
+      student.grades.forEach(function (grade, index) {
+        output += "<p>Pažymys " + (index + 1) + ": " + grade + "</p>";
+      });
+
+      document.getElementById("output").innerHTML = output;
+    }
+
+    function calculateAndDisplayAverage(student) {
+      var sum = student.grades.reduce(function (acc, grade) {
+        return acc + grade;
+      }, 0);
+
+      var average = sum / student.grades.length;
+      average = Math.round(average); // Apvaliname vidurkį į artimiausią sveikąjį skaičių
+
+      var output = "<p>Vidurkis: <span style='color:";
+      // Pritaikykite pažymių vidurkio teksto spalvą pagal sąlygas
+      if (average <= 4) {
+        output += "red";
+      } else if (average > 4 && average <= 8) {
+        output += "orange";
+      } else {
+        output += "green";
+      }
+      output += "'>" + average + "</span></p>";
+      document.getElementById("output").innerHTML += output;
+    }
+  </script>
+
+</body>
+
+</html>
